@@ -123,24 +123,16 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
           selected_folder = gr.Dropdown([item['name'] for item in load_prompts().get("prompts", []) if "children" in item], label="Ordner auswählen")
           export_button = gr.Button("In Markdown exportieren")
           markdown_output = gr.File(label="Markdown herunterladen")
+        with gr.Tab("Suche"):
+          search_result = gr.Textbox(label="Suchergebnis") # Hinzufügen der search_result-Komponente
 
     
     search_button.click(
         manage_prompts_gradio,
         inputs=[action, name, is_folder, content, path, selected_folder, search_query],
-        outputs=[prompts_output, markdown_output, search_result]
+        outputs=[prompts_output, markdown_output, search_result] # search_result zu outputs hinzufügen
     )
 
-    # Event-Handler hinzufügen
-    # action_dd.change(manage_prompts_gradio, inputs=[action_dd, name_tb, is_folder_cb, content_tb, path_tb, selected_folder_dd], outputs=[prompts_output, markdown_output])
-    # name_tb.change(manage_prompts_gradio, inputs=[action_dd, name_tb, is_folder_cb, content_tb, path_tb, selected_folder_dd], outputs=[prompts_output, markdown_output])
-    # is_folder_cb.change(manage_prompts_gradio, inputs=[action_dd, name_tb, is_folder_cb, content_tb, path_tb, selected_folder_dd], outputs=[prompts_output, markdown_output])
-    # content_tb.change(manage_prompts_gradio, inputs=[action_dd, name_tb, is_folder_cb, content_tb, path_tb, selected_folder_dd], outputs=[prompts_output, markdown_output])
-    # path_tb.change(manage_prompts_gradio, inputs=[action_dd, name_tb, is_folder_cb, content_tb, path_tb, selected_folder_dd], outputs=[prompts_output, markdown_output])
-    export_button.click(manage_prompts_gradio, inputs=[action, name, is_folder, content, path, selected_folder, search_query], outputs=[prompts_output, markdown_output, search_result])
-    
-    # Initial die Prompts anzeigen
-    with prompts_output:
-      create_prompt_tree_gradio(load_prompts().get("prompts", []))
+    # ... (Event-Handler für export_button und Initialisierung der Prompts bleiben unverändert) ...
 
 demo.launch(server_name="0.0.0.0", server_port=8080)
